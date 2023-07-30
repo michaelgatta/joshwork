@@ -1,0 +1,54 @@
+version: '3.9'
+services: 
+  dnd:
+    container_name: dinddocker
+    image: docker:dind
+    privileged: true
+    ports:
+        - 2376:2376
+    environment:
+        - DOCKER_TLS_CERTDIR=/certs   
+    networks:
+      jenkins:
+        aliases:
+          - docker
+    volumes:
+       - jenkins-docker-certs:/certs/client
+       - jenkins-data:/var/jenkins_home
+
+  jenkins_work:
+     build: 
+       context: .
+       dockerfile: Dockerfile
+     container_name: mikeworkjk
+     ports:
+       - 8080:8080
+       - 50000:50000
+     networks:
+       - jenkins 
+     environment:
+       - DOCKER_HOST=tcp://docker:2376
+       - DOCKER_CERT_PATH=/certs/client
+       - DOCKER_TLS_VERIFY=1
+     volumes:
+       - jenkins-data:/var/jenkins_home 
+       - jenkins-docker-certs:/certs/client:ro
+     restart: on-failure
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
+networks: 
+  jenkins:
+  
+  
+    
+
+    
+       
+
+
+
+
+
+ 
