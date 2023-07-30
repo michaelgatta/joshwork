@@ -7,8 +7,7 @@ pipeline{
     stages{
         stage('git checkout'){
             steps{
-                ff
-
+                git credentialsId: 'gitcheckout', url: 'https://github.com/michaelgatta/joshwork'
             }
         }
         stage('build image'){
