@@ -30,8 +30,12 @@ pipeline{
             }
         }
         stage('clean up'){
-            sh 'docker rmi -f $(docker image ls -aq)'
-            sh 'docker logout'
+            steps{
+                 sh 'docker rmi -f $(docker image ls -aq)'
+                 sh 'docker logout'
+
+            }
+           
         }
     }
 }
